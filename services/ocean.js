@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { cleanDomain } = require("../utils/cleanDomain");
 
 async function findSimilarCompanies(domain) {
     try{
@@ -23,10 +24,11 @@ async function findSimilarCompanies(domain) {
         // console.log(response.data)
 
         const companies = response.data.companies || []
-        // console.log(companies[0])
-        const domains = companies.map(
-            (item) => item.company.rootUrl
-        )
+        
+       const domains = companies
+        .map((item) =>
+            cleanDomain(item.company.rootUrl)
+    )
 
         console.log("Companies found!!")
 
