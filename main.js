@@ -1,5 +1,8 @@
 require('dotenv').config()
 const {findSimilarCompanies} = require('./services/ocean')
+const {findDecisionMakers} = require('./services/prospeo')
+const { sendEmail } = require("./services/brevo");
+const { generateEmail } = require("./utils/generateEmail");
 
 const readline = require("readline")
 
@@ -22,6 +25,12 @@ async function runPipeline() {
 console.log("Starting pipeline");
 console.log("Domain: ",domain)
 const companies = await findSimilarCompanies(domain)
+
+for (const company of companies.slice(0, 1)){
+    const contacts = await findDecisionMakers(company)
+}
+
+
 
 rl.close()
 }
