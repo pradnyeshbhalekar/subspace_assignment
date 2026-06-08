@@ -15,7 +15,7 @@ async function findDecisionMakers(domain) {
                         },
                     },
                     person_seniority: {
-                        include: ["Founder/Owner", "C-Suite", "VP"],
+                        include: ["Founder/Owner", "C-Suite"],
                     },
                 },
             },
@@ -70,7 +70,7 @@ async function findDecisionMakers(domain) {
             } catch (enrichErr) {
                 console.log(`${name} — enrich failed:`, enrichErr.response?.data || enrichErr.message);
             }
-            await new Promise((res) => setTimeout(res, 500));
+            await new Promise((res) => setTimeout(res, 1500));
         }
 
         console.log(`Contacts with verified emails: ${contacts.length}`);
