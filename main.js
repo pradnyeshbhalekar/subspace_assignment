@@ -28,14 +28,25 @@ async function runPipeline() {
   for (const company of companies.slice(0, 1)) {
     const contacts = await findDecisionMakers(company);
 
+    console.log(`[3/4] Sending emails to ${contacts.length} contacts...`);
+
+
+    const confirm = await askQuestion(`About to send ${contacts.slice(0, 3).length} emails. Proceed? (yes/no): `);
+    if (confirm.trim().toLowerCase() !== "yes") {
+      console.log("Aborted.");
+      rl.close();
+      return;
+    }
+
     for (const contact of contacts.slice(0, 3)) {
       const emailBody = generateEmail(contact, company);
 
-      console.log("OUTREACH EMAIL");
-      console.log(`To: ${contact.email}`);
-      console.log(`LinkedIn: ${contact.linkedin}`);
-      console.log(`Status: ${contact.emailStatus}\n`);
-      console.log(emailBody);
+      console.log(`[4/4] Sending to ${contact.email}...`);
+      await sendEmail(
+        contact.email,
+        `Quick note, ${contact.name.split(" ")[0]}`,
+        `<pre>${emailBody}</pre>`
+      );
     }
   }
 
